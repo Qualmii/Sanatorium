@@ -62,7 +62,7 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
                 MenuItem::make('Общие собрания', new MeetingResource())
                     ->icon('heroicons.outline.chat-bubble-bottom-center-text'),
 
-                MenuItem::make('Садоводам СНТ', new GardenersResource())
+                MenuItem::make('Членам СНТ', new GardenersResource())
                     ->icon('heroicons.outline.user'),
 
                 MenuDivider::make(),

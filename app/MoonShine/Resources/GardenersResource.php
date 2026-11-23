@@ -17,7 +17,7 @@ use MoonShine\Resources\ModelResource;
  */
 class GardenersResource extends AbstractArticleResource
 {
-    protected string $title = 'Садоводам СНТ';
+    protected string $title = 'Членам СНТ';
 
     public function query(): Builder
     {

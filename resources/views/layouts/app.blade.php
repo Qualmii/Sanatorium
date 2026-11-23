@@ -39,9 +39,9 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="{{ route('categories.show', 'news') }}">Новости</a></li>
                     <li><a href="{{ route('categories.show', 'ads') }}">Объявления</a></li>
-                    <li><a href="{{ route('categories.show', 'general_meetings') }}">Общие собрания</a></li>
-                    <li><a href="{{ route('categories.show', 'for_gardeners') }}">Садоводам СНТ</a></li>
-                    <li><a href="{{ route('documents.index') }}">Документы</a></li>
+                    <li><a href="{{ route('categories.show', 'general_meetings') }}">Общие собрания*</a></li>
+                    <li><a href="{{ route('categories.show', 'for_gardeners') }}">Членам СНТ*</a></li>
+                    <li><a href="{{ route('documents.index') }}">Документы*</a></li>
                     @auth
                         <li>
                             <a href="{{ route('logout') }}"
@@ -102,7 +102,11 @@
                     </p>
                     <p>
                         <img src="{{ asset('assets/images/telegram-brands-solid-full.svg') }}" alt="" style="width: 2rem">
-                        Группа Telegram: <a href="https://t.me/sntneftyanik62">t.me/sntneftyanik62 (ссылка-приглашение)</a>
+                        Канал Telegram: <a href="https://t.me/sntneftyanik62">t.me/sntneftyanik62</a>
+                        больше не используется для официальной переписки СНТ „Нефтяник“. В связи с действующими в Российской Федерации ограничениями на использование мессенджера Telegram стабильная связь через него не гарантируется.
+                    </p>
+                    <p>
+                        *Раздел доступен только членам СНТ „Нефтяник“. Доступ предоставляется лицам, внесённым в реестр членов товарищества. Право на доступ закреплено ст. 11 Федерального закона № 217‑ФЗ.
                     </p>
                 </div>
             </div>
