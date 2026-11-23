@@ -97,8 +97,8 @@
                     <p><i class="fa fa-phone"></i> Тел.: +7(4912)97-50-92</p>
                     <p><i class="fa fa-save"></i> snt_neftyanik@mail.ru</p>
                     <p>
-                        <img src="{{ asset('assets/images/telegram-brands-solid-full.svg') }}" alt="" style="width: 2rem">
-                        Telegram: <a href="https://t.me/+79006078472">+7(900)607-84-72 (только текстовые сообщения)</a>
+                        <img src="{{ asset('assets/images/iconka3-messenger-white.svg') }}" alt="" style="width: 2rem">
+                        Max: <a href="https://max.ru/join/Jzt-ukWcng_XQ1CPqiqdI69P_W3r5ee3zdx-oP0GNtY">+7(900)607-84-72 (только текстовые сообщения)</a>
                     </p>
                     <p>
                         <img src="{{ asset('assets/images/telegram-brands-solid-full.svg') }}" alt="" style="width: 2rem">
