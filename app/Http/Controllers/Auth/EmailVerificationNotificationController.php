@@ -18,7 +18,14 @@ class EmailVerificationNotificationController extends Controller
             return redirect()->intended(RouteServiceProvider::HOME);
         }
 
-        $request->user()->sendEmailVerificationNotification();
+        $user = $request->user();
+
+        abort_if(
+            $user->is_blocked || ! $user->unblocked_at || $user->unblocked_at->copy()->addDays(7)->lessThanOrEqualTo(now()),
+            403
+        );
+
+        $user->queueEmailVerification();
 
         return back()->with('status', 'verification-link-sent');
     }

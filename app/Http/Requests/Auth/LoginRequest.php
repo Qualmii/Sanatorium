@@ -42,11 +42,17 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        $user = User::query()->where('phone', $this->input('phone'))->first('is_blocked');
+        $user = User::query()->where('phone', $this->input('phone'))->first(['is_blocked', 'email_verified_at']);
 
-        if ($user->is_blocked == 1) {
+        if ($user && $user->is_blocked) {
             throw ValidationException::withMessages([
-                'phone' => trans('auth_blocked'),
+                'phone' => trans('auth.unverified'),
+            ]);
+        }
+
+        if ($user && is_null($user->email_verified_at)) {
+            throw ValidationException::withMessages([
+                'phone' => trans('auth.unverified'),
             ]);
         }
 

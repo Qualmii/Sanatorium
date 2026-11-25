@@ -1,0 +1,9 @@
+[Unit]
+Description=Run the Sanatorium Laravel scheduler
+After=network.target
+
+[Service]
+Type=oneshot
+User=CHANGE_ME_USER
+WorkingDirectory=/CHANGE_ME_PROJECT_PATH
+ExecStart=/CHANGE_ME_PHP_PATH artisan schedule:run

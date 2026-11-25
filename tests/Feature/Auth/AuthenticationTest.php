@@ -20,10 +20,10 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_authenticate_using_the_login_screen(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['phone' => '+79991234567']);
 
         $response = $this->post('/login', [
-            'email' => $user->email,
+            'phone' => $user->phone,
             'password' => 'password',
         ]);
 
@@ -33,13 +33,29 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['phone' => '+79991234567']);
 
         $this->post('/login', [
-            'email' => $user->email,
+            'phone' => $user->phone,
             'password' => 'wrong-password',
         ]);
 
+        $this->assertGuest();
+    }
+
+    public function test_unverified_users_cannot_authenticate(): void
+    {
+        $user = User::factory()->unverified()->create([
+            'phone' => '+79991234567',
+            'is_blocked' => false,
+        ]);
+
+        $response = $this->post('/login', [
+            'phone' => $user->phone,
+            'password' => 'password',
+        ]);
+
+        $response->assertSessionHasErrors('phone');
         $this->assertGuest();
     }
 

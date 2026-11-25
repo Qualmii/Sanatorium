@@ -3,12 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Jobs\SendUserEmailVerification;
+use App\Notifications\UserEmailVerificationNotification;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Arr;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -39,7 +40,9 @@ class User extends Authenticatable
         'phone',
         'email',
         'password',
-        'is_blocked'
+        'is_blocked',
+        'email_verified_at',
+        'unblocked_at',
     ];
 
     /**
@@ -70,7 +73,9 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'unblocked_at' => 'datetime',
         'password' => 'hashed',
+        'is_blocked' => 'boolean',
     ];
 
     public function getNameAttribute(): string
@@ -81,7 +86,7 @@ class User extends Authenticatable
         $second = $this->attributes['second_name'] ?? null;
 
         if ($first || $last || $second) {
-            return trim(trim(($last ?? '') . ' ' . ($first ?? '')) . ' ' . ($second ?? ''));
+            return trim(trim(($last ?? '').' '.($first ?? '')).' '.($second ?? ''));
         }
 
         // fallback — возвращаем обычное поле name (существует в миграции)
@@ -91,5 +96,40 @@ class User extends Authenticatable
     public function sections(): BelongsToMany
     {
         return $this->belongsToMany(Section::class);
+    }
+
+    /**
+     * Mark the user's email as verified.
+     */
+    public function markEmailAsVerified(): bool
+    {
+        return $this->forceFill([
+            'email_verified_at' => $this->freshTimestamp(),
+        ])->save();
+    }
+
+    public function getEmailForVerification(): string
+    {
+        return $this->email;
+    }
+
+    public function queueEmailVerification(bool $emailChanged = false): void
+    {
+        $notification = new UserEmailVerificationNotification($emailChanged);
+        SendUserEmailVerification::dispatch(
+            $this->getKey(),
+            $this->email,
+            $notification->toMail($this)->verificationUrl,
+            $this->unblocked_at->toDateTimeString(),
+            $emailChanged,
+        );
+    }
+
+    /**
+     * Determine if the user has verified their email address.
+     */
+    public function hasVerifiedEmail(): bool
+    {
+        return ! is_null($this->email_verified_at);
     }
 }

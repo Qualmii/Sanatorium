@@ -4,21 +4,18 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources;
 
-use App\Models\Section;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
-
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use MoonShine\Decorations\Block;
 use MoonShine\Fields\Email;
-use MoonShine\Fields\Password;
-use MoonShine\Fields\PasswordRepeat;
+use MoonShine\Fields\Fields;
+use MoonShine\Fields\ID;
 use MoonShine\Fields\Phone;
 use MoonShine\Fields\Relationships\BelongsToMany;
-use MoonShine\Fields\Select;
 use MoonShine\Fields\Switcher;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\ModelResource;
-use MoonShine\Decorations\Block;
-use MoonShine\Fields\ID;
 
 /**
  * @extends ModelResource<User>
@@ -28,6 +25,11 @@ class UserResource extends ModelResource
     protected string $model = User::class;
 
     protected string $title = 'Users';
+
+    public function save(Model $item, ?Fields $fields = null): Model
+    {
+        return DB::transaction(fn (): Model => parent::save($item, $fields));
+    }
 
     public function search(): array
     {

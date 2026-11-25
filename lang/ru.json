@@ -14,6 +14,8 @@
     "auth_blocked": "Дождитесь подтверждения регистрации",
     "auth_failed": "Неверные имя пользователя или пароль.",
     "auth_throttle": "Слишком много попыток входа. Повторите попытку через :seconds секунд.",
+    "auth.unverified": "Необходимо подтвердить почту. Проверьте почтовый ящик",
+    "After changing your email, you must confirm the new address within 7 days. Until then, you cannot log in; otherwise your account will be deleted.": "После смены адреса необходимо подтвердить новую почту в течение 7 дней. До подтверждения вход будет недоступен; если не подтвердить адрес, аккаунт будет удалён.",
     "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.": "Забыли пароль? Без проблем. Просто сообщите нам свой адрес электронной почты, и мы вышлем вам ссылку для сброса пароля, которая позволит вам выбрать новый.",
     "Email Password Reset Link": "Письмо для сброса пароля",
     "Reset Password Notification": "Уведомление о сбросе пароля",

@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
          ]);
 
          Category::factory()->create([
-             'title' => 'Садоводам СНТ',
+             'title' => 'Членам СНТ',
              'slug' => 'for_gardeners',
          ]);
 

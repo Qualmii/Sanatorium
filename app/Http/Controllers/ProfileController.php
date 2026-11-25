@@ -6,6 +6,7 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -26,13 +27,35 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $emailChanged = false;
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        DB::transaction(function () use ($request, $user, &$emailChanged): void {
+            $user->fill($request->validated());
+            $emailChanged = $user->isDirty('email');
+
+            if ($emailChanged) {
+                $user->email_verified_at = null;
+                $user->unblocked_at = now();
+            }
+
+            $user->save();
+
+            if ($emailChanged) {
+                $user->queueEmailVerification(true);
+            }
+        });
+
+        if ($emailChanged) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return Redirect::route('login')->with(
+                'status',
+                'Подтвердите новый адрес электронной почты по ссылке в письме. На подтверждение есть 7 дней.'
+            );
         }
-
-        $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }

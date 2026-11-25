@@ -1,0 +1,15 @@
+[Unit]
+Description=Sanatorium email verification queue worker
+After=network.target
+
+[Service]
+Type=simple
+User=CHANGE_ME_USER
+WorkingDirectory=/CHANGE_ME_PROJECT_PATH
+ExecStart=/CHANGE_ME_PHP_PATH artisan queue:work database --queue=verification-mail --sleep=3 --timeout=60
+Restart=always
+RestartSec=5
+TimeoutStopSec=75
+
+[Install]
+WantedBy=multi-user.target
