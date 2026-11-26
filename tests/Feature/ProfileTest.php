@@ -24,15 +24,16 @@ class ProfileTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_profile_information_can_be_updated(): void
+    public function test_changing_email_requires_verification(): void
     {
         $user = User::factory()->create();
+        $name = $user->name;
         Queue::fake();
 
         $response = $this
             ->actingAs($user)
             ->patch('/profile', [
-                'name' => 'Test User',
+                'name' => $name,
                 'email' => 'test@example.com',
             ]);
 
@@ -42,7 +43,7 @@ class ProfileTest extends TestCase
 
         $user->refresh();
 
-        $this->assertSame('Test User', $user->name);
+        $this->assertSame($name, $user->name);
         $this->assertSame('test@example.com', $user->email);
         $this->assertNull($user->email_verified_at);
         $this->assertNotNull($user->unblocked_at);
@@ -61,7 +62,7 @@ class ProfileTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->patch('/profile', [
-                'name' => 'Test User',
+                'name' => $user->name,
                 'email' => $user->email,
             ]);
 

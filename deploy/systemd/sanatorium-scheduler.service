@@ -4,6 +4,6 @@ After=network.target
 
 [Service]
 Type=oneshot
-User=CHANGE_ME_USER
+User=u2616790
 WorkingDirectory=/CHANGE_ME_PROJECT_PATH
 ExecStart=/CHANGE_ME_PHP_PATH artisan schedule:run
