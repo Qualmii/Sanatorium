@@ -5,8 +5,8 @@ After=network.target
 [Service]
 Type=simple
 User=u2616790
-WorkingDirectory=/CHANGE_ME_PROJECT_PATH
-ExecStart=/CHANGE_ME_PHP_PATH artisan queue:work database --queue=verification-mail --sleep=3 --timeout=60
+WorkingDirectory=/var/www/u2616790/data/www/xn--62-mlcmkpab6alcx8l.xn--p1ai/
+ExecStart=/opt/php82/bin/php artisan queue:work database --queue=verification-mail --sleep=3 --timeout=60
 Restart=always
 RestartSec=5
 TimeoutStopSec=75
